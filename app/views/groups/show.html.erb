@@ -1,0 +1,11 @@
+<% if @in_group %>
+  <ul>
+    <% @users.each do |user| %>
+      <li>
+        <h1><%= user.email %></h1>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <h1> Not in group </h1>
+<% end %>

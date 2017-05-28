@@ -10,18 +10,22 @@
       text-align: left;
       display: inline-block;
     }
-    .name-search {
-      width: 33%;
-    }
-    .course-search {
-      width: 33%;
-    }
-    .size-search {
-      width: 8.5%;
-    }
-    .reset-filter {
-      text-align: right;
-      padding: 0% 12%;
+    .filter-row {
+      width: 70%;
+      display: inline-block;
+      text-align: left;
+      .name-search {
+        width: 40%;
+      }
+      .course-search {
+        width: 40%;
+      }
+      .size-search {
+        width: 75px;
+      }
+      .reset-filter {
+        text-align: left;
+      }
     }
   }
 }

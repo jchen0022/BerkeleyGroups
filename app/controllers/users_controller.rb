@@ -10,6 +10,7 @@ class UsersController < ApplicationController
 
   def dashboard
     @user = current_user
+    @groups = @user.groups
   end
 
   def search

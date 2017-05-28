@@ -1,0 +1,11 @@
+<div>
+  <ul>
+  <% @groups.each do |group| %>
+    <li class="group-result">
+      <h5><%= group.name %></h5>
+      <p><%= group.course %></p>
+      <p><%= group.size %></p>
+    </li>
+  <% end %>
+  </ul>
+</div>

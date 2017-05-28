@@ -12,7 +12,9 @@ Rails.application.routes.draw do
 
   authenticated :user do
     root 'users#dashboard', as: :user_dashboard
+    get '/search' => 'users#search'
   end
 
+  get '/search' => 'static_pages#search'
   root 'static_pages#home'
 end
