@@ -80,6 +80,7 @@ test:
 #
 production:
   <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
   database: BerkeleyGroups_production
   username: BerkeleyGroups
   password: <%= ENV['BERKELEYGROUPS_DATABASE_PASSWORD'] %>
