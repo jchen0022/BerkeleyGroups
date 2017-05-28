@@ -21,16 +21,17 @@
       position: relative;
       top: 0%;
       margin-bottom: 1em;
+      text-align: center;
 
       h2 {
         margin-top: 0px;
       }
 
       .sign-in-form {
-        width: 25%;
+        text-align: center;
+        width: 380px;
         display: inline-block;
         position: relative;
-        left: 37.5%;
         .email-field {
           margin-bottom: 0.8em;
           #user_email {
@@ -64,6 +65,10 @@
         }
         .btn-primary:focus {
           outline: 0;
+        }
+
+        .links {
+          text-align: left;
         }
       }
     }

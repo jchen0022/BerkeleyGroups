@@ -28,6 +28,9 @@ gem 'jquery-ui-rails'
 # Devise for authentication
 gem 'devise'
 
+# Filterrific for filtering groups
+gem 'filterrific' #, :github => 'ayaman/filterrific'
+
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks

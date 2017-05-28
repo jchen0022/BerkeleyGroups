@@ -1,7 +1,18 @@
 Rails.application.routes.draw do
   devise_for :users
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  root 'static_pages#home'
 
-  resources :user
+  resources :users do
+    collection do
+      get 'search'
+    end
+  end
+
+  resources :groups
+
+  authenticated :user do
+    root 'users#dashboard', as: :user_dashboard
+  end
+
+  root 'static_pages#home'
 end

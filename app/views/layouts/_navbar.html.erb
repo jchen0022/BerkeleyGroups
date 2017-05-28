@@ -9,9 +9,9 @@
         <span class="icon-bar"></span>
       </button>
       <% if action_name == "new" and (controller_name == "sessions" or controller_name == "registrations") %>
-        <a class="navbar-brand navbar-logo" href="#"><%= image_tag "logo_with_text_short.png", class:"logo-pic.png" %></a>
+        <a class="navbar-brand navbar-logo" href="<%= root_path %>"><%= image_tag "logo_with_text_short.png", class:"logo-pic.png" %></a>
       <% else %>
-        <a class="navbar-brand navbar-logo" href="#"><%= image_tag "logo_with_text.png", class:"logo-pic.png" %></a>
+        <a class="navbar-brand navbar-logo" href="<%= root_path %>"><%= image_tag "logo_with_text.png", class:"logo-pic.png" %></a>
       <% end %>
     </div>
 
