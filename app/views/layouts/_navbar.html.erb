@@ -1,0 +1,32 @@
+<nav class="navbar navbar-default main-navbar">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar-collapse" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <% if action_name == "new" and (controller_name == "sessions" or controller_name == "registrations") %>
+        <a class="navbar-brand navbar-logo" href="#"><%= image_tag "logo_with_text_short.png", class:"logo-pic.png" %></a>
+      <% else %>
+        <a class="navbar-brand navbar-logo" href="#"><%= image_tag "logo_with_text.png", class:"logo-pic.png" %></a>
+      <% end %>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="main-navbar-collapse">
+      <ul class="nav navbar-nav">
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">About</a></li>
+        <% if user_signed_in? %>
+          <li><%= link_to "Sign out", destroy_user_session_path, method: :delete %></li>
+        <% else %>
+          <li><%= link_to "Sign in", new_user_session_path %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</nav>

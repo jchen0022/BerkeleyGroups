@@ -1,0 +1,71 @@
+.sessions.new {
+  .navbar {
+    background-color: white;
+  }
+  .sign-in-container {
+    height: calc(100vh - 52px);
+    background: linear-gradient(141deg, #0fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
+    padding-top: 5.5em;
+    hr {
+      border-color: $berkeley-blue;
+      width: 491px;
+    }
+    .image-row {
+      position: relative;
+      text-align: center;
+      img {
+        height: 7em;
+      }
+    }
+    .form-row {
+      position: relative;
+      top: 0%;
+      margin-bottom: 1em;
+
+      h2 {
+        margin-top: 0px;
+      }
+
+      .sign-in-form {
+        width: 25%;
+        display: inline-block;
+        position: relative;
+        left: 37.5%;
+        .email-field {
+          margin-bottom: 0.8em;
+          #user_email {
+            height: 2.6em;
+            font-size: 1.1em;
+            border-radius: 3px;
+          }
+        }
+        .password-field {
+          margin-bottom: 0.8em;
+          #user_password {
+            height: 2.6em;
+            font-size: 1.1em;
+            border-radius: 3px;
+          }
+        }
+        .btn-primary {
+          background-color: $berkeley-blue;
+          border: none;
+          border-radius: 3px;
+          width: 100%;
+          text-align: center;
+          font-size: 1.3em;
+          margin-bottom: 5px;
+          -webkit-transition: background-color 0.8s ease-in;
+          -moz-transition: background-color 0.8s ease-in;
+          transition: background-color 0.2s ease-in;
+        }
+        .btn-primary:hover {
+          background-color: $founders-rock;
+        }
+        .btn-primary:focus {
+          outline: 0;
+        }
+      }
+    }
+  }
+}
