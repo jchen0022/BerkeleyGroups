@@ -1,2 +1,5 @@
-<h1>My groups</h1>
-<%= render "users/user_groups_list", locals: {groups: @groups} %>
+<div class="container-fluid" style="padding: 0% 2%">
+  <h1>Hi <%= @user.first_name %></h1>
+  <h1>My groups</h1>
+  <%= render "users/user_groups_list", locals: {groups: @groups} %>
+</div>

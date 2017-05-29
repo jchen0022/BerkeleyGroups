@@ -1,0 +1,14 @@
+<div class="container-fluid main-container">
+  <%= form_for @group do |f| %>
+    <%= f.label :name %>
+    <%= f.text_field :name, class: "form-control" %>
+
+    <%= f.label :course %>
+    <%= f.text_field :course, class: "form-control" %>
+
+    <%= f.label :size %>
+    <%= f.select :size, options_for_select(Group.options_for_size), {}, class: "form-control "%>
+
+    <%= f.submit "Create Group", class: "btn btn-primary" %>
+  <% end %>
+</div>

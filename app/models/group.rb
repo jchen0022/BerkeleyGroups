@@ -1,6 +1,7 @@
 class Group < ApplicationRecord
   has_many :user_groups
   has_many :users, through: :user_groups
+  has_many :tasks
 
   filterrific(
     default_filter_params: {course_query: "61", name_query: "myG"},
@@ -30,5 +31,9 @@ class Group < ApplicationRecord
   scope :group_size, lambda { |query|
     where(size: query)
   }
+
+  def self.options_for_size
+    [[1, 1], [2, 2], [3, 3], [4, 4]]
+  end
 
 end

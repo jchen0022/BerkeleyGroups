@@ -1,11 +1,14 @@
-<% if @in_group %>
-  <ul>
-    <% @users.each do |user| %>
-      <li>
-        <h1><%= user.email %></h1>
-      </li>
-    <% end %>
-  </ul>
-<% else %>
-  <h1> Not in group </h1>
-<% end %>
+<div class="container-fluid" style="padding: 0% 5%">
+  <h1><%= @group.name %></h1>
+  <% if @in_group %>
+    <ul>
+      <% @users.each do |user| %>
+        <li>
+          <h3><%= user.first_name %> <%= user.last_name %></h3>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <h1> Not in group </h1>
+  <% end %>
+</div>
