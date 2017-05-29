@@ -1,9 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!, except: [:new]
-
-  def new
-    puts "NEW"
-  end
+  before_action :authenticate_user!
 
   def show
     redirect_to root_path

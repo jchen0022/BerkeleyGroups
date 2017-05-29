@@ -5,6 +5,7 @@ class GroupsController < ApplicationController
   def show
     @group = current_group
     @users = current_group.users
+    @tasks = @group.tasks
   end
 
   def new

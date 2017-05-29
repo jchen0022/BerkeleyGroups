@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
   has_many :user_groups
   has_many :groups, through: :user_groups
-  has_many :tasks
+  has_many :tasks, dependent: :destroy
 
   before_save :format_name
   before_update :format_name
