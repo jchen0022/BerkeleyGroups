@@ -11,6 +11,7 @@ class TasksController < ApplicationController
     if @task.save
       @group.tasks << @task
       current_user.tasks << @task
+      TasksChannel.broadcast_to(@group, {action: "create", data: @task}) 
       redirect_to group_path(@group)
     else
       redirect_to root_path
@@ -24,6 +25,10 @@ class TasksController < ApplicationController
   end
 
   def destroy
+    @task = Task.find(params[:id])
+    @task.destroy
+    TasksChannel.broadcast_to(@group, {action: "delete", data: @task})
+    redirect_to group_path(@group)
   end
 
   private 

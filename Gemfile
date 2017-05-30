@@ -28,6 +28,9 @@ gem 'jquery-ui-rails'
 # Devise for authentication
 gem 'devise'
 
+# Gon for passing variables to client js
+gem 'gon'
+
 # Filterrific for filtering groups
 gem 'filterrific' #, :github => 'ayaman/filterrific'
 

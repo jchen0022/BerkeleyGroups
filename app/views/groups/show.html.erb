@@ -7,15 +7,22 @@
       <% end %>
     </ul>
     <h1>Tasks</h1>
-    <ul>
+    <ul class="tasks-list">
       <% @tasks.each do |task| %>
-        <li>
+        <li id="task-<%= task.id %>" class="task-item">
           <h3><%= task.name %></h3>
-          <h5><%= task.description %><h5>
+          <h5><%= task.description %></h5>
+          <%= link_to "Delete task", group_task_path(@group, task), method: :delete, class: "btn btn-danger" %>
         </li>
       <% end %>
     </ul>
     <%= link_to "New task", new_group_task_path(@group), class: "btn btn-primary" %>
+    <script>
+      $(function() {
+        $(".tasks-list").sortable({
+           distance:20
+        });
+     });
   <% else %>
     <h1> Not a member of this group </h1>
   <% end %>

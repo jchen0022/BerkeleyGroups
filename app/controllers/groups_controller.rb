@@ -6,6 +6,8 @@ class GroupsController < ApplicationController
     @group = current_group
     @users = current_group.users
     @tasks = @group.tasks
+    gon.user_id = current_user.id
+    gon.group_id = @group.id
   end
 
   def new

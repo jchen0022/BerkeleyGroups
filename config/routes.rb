@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users, :controllers => {registrations: 'registrations'}
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-
   resources :users do
     collection do
       get 'search'
@@ -9,9 +8,8 @@ Rails.application.routes.draw do
   end
 
   resources :groups do
-    resources :tasks, only: [:new, :create]
+    resources :tasks, only: [:new, :create, :edit, :update, :destroy]
   end
-  resources :tasks, only: [:edit, :update, :destroy]
 
   authenticated :user do
     root 'users#dashboard', as: :user_dashboard
