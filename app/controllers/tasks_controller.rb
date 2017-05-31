@@ -11,7 +11,7 @@ class TasksController < ApplicationController
     if @task.save
       @group.tasks << @task
       current_user.tasks << @task
-      TasksChannel.broadcast_to(@group, {action: "create", data: @task}) 
+      TasksChannel.broadcast_to(@group, {action: "create", data: @task, user: current_user}) 
       redirect_to group_path(@group)
     else
       redirect_to root_path

@@ -1,0 +1,4 @@
+<% js = escape_javascript(
+  render(partial: 'groups/search_groups_list', locals: { groups: @groups })
+) %>
+$("#filterrific_results").html("<%= js %>");
