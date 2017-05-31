@@ -9,9 +9,9 @@
     <%= f.label :priority %>
     <%= f.text_field :priority, class: "form-control" %>
 
-    <%= f.label :user %>
-    <%= f.select :user, options_for_select(@group.options_for_user), {}, class: "form-control" %>
+    <%= f.label :user_id %>
+    <%= f.select :user_id, options_for_select(@group.options_for_user), {}, class: "form-control" %>
 
-    <%= f.submit "Create Task", class: "btn btn-primary" %>
+    <%= f.submit "Update Task", method: "put", class: "btn btn-primary" %>
   <% end %>
 </div>

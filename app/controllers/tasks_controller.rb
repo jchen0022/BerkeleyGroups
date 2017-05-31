@@ -7,11 +7,13 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = Task.new(task_params)
+    to_update = task_params
+    new_user = User.find(to_update.delete(:user_id))
+    @task = Task.new(to_update)
     if @task.save
       @group.tasks << @task
-      current_user.tasks << @task
-      TasksChannel.broadcast_to(@group, {action: "create", data: @task, user: current_user}) 
+      new_user.tasks << @task
+      TasksChannel.broadcast_to(@group, {action: "create", data: @task, user: new_user}) 
       redirect_to group_path(@group)
     else
       redirect_to root_path
@@ -19,21 +21,35 @@ class TasksController < ApplicationController
   end
 
   def edit
+    @task = Task.find(params[:id])
+  rescue
+      redirect_back(fallback_location: root_path)
   end
 
   def update
-    @task = Task.find(params[:id])
-    completed = params[:completed]
-    if completed == "true"
-      @task.update(completed: true)
-      TasksChannel.broadcast_to(@group, {action: "update", update_type: "completion", completed: "true", data: @task})
-      redirect_to group_path(@group)
-    elsif completed == "false"
-      @task.update(completed: false)
-      TasksChannel.broadcast_to(@group, {action: "update", update_type: "completion", completed: "false", data: @task})
-      redirect_to group_path(@group)
+    if params.key?(:completed)
+      # For updating buttons in group dashboard
+      @task = Task.find(params[:id])
+      completed = params[:completed]
+      if completed == "true"
+        @task.update(completed: true)
+        TasksChannel.broadcast_to(@group, {action: "update", update_type: "completion", completed: "true", data: @task})
+        redirect_to group_path(@group)
+      elsif completed == "false"
+        @task.update(completed: false)
+        TasksChannel.broadcast_to(@group, {action: "update", update_type: "completion", completed: "false", data: @task})
+        redirect_to group_path(@group)
+      else
+        puts "Should not happen"
+      end
     else
-      puts "Should not happen"
+      # For manually updating task
+      @task = Task.find(params[:id])
+      to_update = task_params
+      new_user = User.find(to_update.delete(:user_id))
+      @task.update(to_update)
+      new_user.tasks << @task
+      redirect_to group_path(@group)
     end
   end
 
@@ -54,7 +70,7 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:name, :description)
+    params.require(:task).permit(:name, :description, :priority, :user_id)
   end
 
 end

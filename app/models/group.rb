@@ -4,7 +4,7 @@ class Group < ApplicationRecord
   has_many :tasks, dependent: :destroy
 
   filterrific(
-    default_filter_params: {course_query: "61", name_query: "myG"},
+    default_filter_params: {group_size: 4},
     available_filters: [
       :name_query,
       :course_query,
@@ -33,7 +33,14 @@ class Group < ApplicationRecord
   }
 
   def self.options_for_size
-    [[1, 1], [2, 2], [3, 3], [4, 4]]
+    (2..4).map do |n|
+      [n, n]
+    end
   end
-
+  
+  def options_for_user 
+    users.all.map do |user|
+      [user.first_name + " " + user.last_name, user.id]
+    end
+  end
 end
