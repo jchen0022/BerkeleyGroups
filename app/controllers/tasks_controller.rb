@@ -22,12 +22,25 @@ class TasksController < ApplicationController
   end
 
   def update
+    @task = Task.find(params[:id])
+    completed = params[:completed]
+    if completed == "true"
+      @task.update(completed: true)
+      TasksChannel.broadcast_to(@group, {action: "update", update_type: "completion", completed: "true", data: @task})
+      redirect_to group_path(@group)
+    elsif completed == "false"
+      @task.update(completed: false)
+      TasksChannel.broadcast_to(@group, {action: "update", update_type: "completion", completed: "false", data: @task})
+      redirect_to group_path(@group)
+    else
+      puts "Should not happen"
+    end
   end
 
   def destroy
     @task = Task.find(params[:id])
     @task.destroy
-    TasksChannel.broadcast_to(@group, {action: "delete", data: @task})
+    TasksChannel.broadcast_to(@group, {action: "destroy", data: @task})
     redirect_to group_path(@group)
   end
 

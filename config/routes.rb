@@ -9,13 +9,14 @@ Rails.application.routes.draw do
 
   resources :groups do
     resources :tasks, only: [:new, :create, :edit, :update, :destroy]
+    collection do
+      get 'search'
+    end
   end
 
   authenticated :user do
     root 'users#dashboard', as: :user_dashboard
-    get '/search' => 'users#search'
   end
 
-  get '/search' => 'static_pages#search'
   root 'static_pages#home'
 end

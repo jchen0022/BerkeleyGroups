@@ -12,7 +12,14 @@
         <li id="task-<%= task.id %>" class="task-item">
           <h3><%= task.name %></h3>
           <h5><%= task.description %></h5>
-          <%= link_to "Delete task", group_task_path(@group, task), method: :delete, class: "btn btn-danger" %>
+          <h5>Task for: <%= task.user.first_name %> <%=task.user.last_name %></h5> 
+          <h5>Completed: <%= task.completed %></h5>
+          <% if not task.completed %>
+            <%= link_to "Completed task!", group_task_path(@group, task, completed: true), method: :put, class: "btn btn-success" %>
+          <% else %>
+            <%= link_to "Un-complete task", group_task_path(@group, task, completed: false), method: :put, class: "btn btn-warning" %>
+          <% end %>
+          <%= link_to "Delete task :(", group_task_path(@group, task), method: :delete, class: "btn btn-danger" %>
         </li>
       <% end %>
     </ul>
@@ -23,6 +30,7 @@
            distance:20
         });
      });
+    </script>
   <% else %>
     <h1> Not a member of this group </h1>
   <% end %>
