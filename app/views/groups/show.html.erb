@@ -1,11 +1,19 @@
 <div class="container-fluid" style="padding: 0% 5%">
-  <h1><%= @group.name %></h1>
+  <h1><%= @group.name %> <%= @users.length %>/<%= @group.size %></h1>
   <% if @in_group %>
     <ul>
       <% @users.each do |user| %>
         <li><h3><%= user.first_name %> <%= user.last_name %></h3></li>
       <% end %>
     </ul>
+    <h1>Requests</h1>
+    <% @requests.each do |request| %>
+      <% user = request.user %>
+      <li>
+        <h3>Request from: <%= user.first_name %> <%= user.last_name %></h3>
+        <%= link_to "Accept request", add_member_group_path(@group, user_id: user.id, request_id: request.id), method: :post, class: "btn btn-primary" %>
+      </li>
+    <% end %>
     <h1>Tasks</h1>
     <ul class="tasks-list">
       <% @tasks.each do |task| %>
@@ -32,6 +40,6 @@
      });
     </script>
   <% else %>
-    <h1> Not a member of this group </h1>
+    <%= render "groups/join_group" %>
   <% end %>
 </div>

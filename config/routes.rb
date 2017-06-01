@@ -9,8 +9,14 @@ Rails.application.routes.draw do
 
   resources :groups do
     resources :tasks, only: [:new, :create, :edit, :update, :destroy]
+
     collection do
       get 'search'
+    end
+
+    member do
+      post 'request_join'
+      post 'add_member'
     end
   end
 

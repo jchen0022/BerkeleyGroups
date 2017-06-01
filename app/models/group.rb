@@ -2,6 +2,7 @@ class Group < ApplicationRecord
   has_many :user_groups
   has_many :users, through: :user_groups
   has_many :tasks, dependent: :destroy
+  has_many :requests, dependent: :destroy
 
   filterrific(
     default_filter_params: {group_size: 4},

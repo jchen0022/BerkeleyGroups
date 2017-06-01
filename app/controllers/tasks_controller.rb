@@ -8,7 +8,7 @@ class TasksController < ApplicationController
 
   def create
     to_update = task_params
-    new_user = User.find(to_update.delete(:user_id))
+    new_user = User.find(to_update.delete(:user))
     @task = Task.new(to_update)
     if @task.save
       @group.tasks << @task
@@ -70,7 +70,7 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:name, :description, :priority, :user_id)
+    params.require(:task).permit(:name, :description, :priority, :user)
   end
 
 end
