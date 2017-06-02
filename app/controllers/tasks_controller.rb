@@ -10,13 +10,16 @@ class TasksController < ApplicationController
     to_update = task_params
     new_user = User.find(to_update.delete(:user))
     @task = Task.new(to_update)
-    if @task.save
-      @group.tasks << @task
-      new_user.tasks << @task
-      TasksChannel.broadcast_to(@group, {action: "create", data: @task, user: new_user}) 
-      redirect_to group_path(@group)
-    else
-      redirect_to root_path
+    respond_to do |format|
+      if @task.save
+        @group.tasks << @task
+        new_user.tasks << @task
+        TasksChannel.broadcast_to(@group, {action: "create", data: @task, user: new_user}) 
+        format.html {redirect_to @group}
+      else
+        @errors = @task.errors
+        format.js {render :file => "layouts/errors.js.erb"}
+      end
     end
   end
 

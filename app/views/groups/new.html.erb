@@ -1,14 +1,18 @@
-<div class="container-fluid main-container">
-  <%= form_for @group do |f| %>
-    <%= f.label :name %>
-    <%= f.text_field :name, class: "form-control" %>
+<% if @user.groups.length < User.max_groups %>
+  <div class="container-fluid main-container">
+    <%= form_for @group, remote: true do |f| %>
+      <%= f.label :name %>
+      <%= f.text_field :name, class: "form-control" %>
 
-    <%= f.label :course %>
-    <%= f.text_field :course, class: "form-control" %>
+      <%= f.label :course %>
+      <%= f.text_field :course, class: "form-control" %>
 
-    <%= f.label :size %>
-    <%= f.select :size, options_for_select(Group.options_for_size), {}, class: "form-control "%>
+      <%= f.label :size %>
+      <%= f.select :size, options_for_select(Group.options_for_size), {}, class: "form-control "%>
 
-    <%= f.submit "Create Group", class: "btn btn-primary" %>
-  <% end %>
-</div>
+      <%= f.submit "Create Group", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+<% else %>
+  <h3>Sorry, you have already reached the maximum number of groups</h3>
+<% end %>

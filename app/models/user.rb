@@ -11,6 +11,10 @@ class User < ApplicationRecord
   before_save :format_name
   before_update :format_name
 
+  def self.max_groups
+    return 8
+  end
+
   private 
 
   def format_name

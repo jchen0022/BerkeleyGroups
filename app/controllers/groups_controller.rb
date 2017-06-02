@@ -7,13 +7,14 @@ class GroupsController < ApplicationController
     @group = current_group
     @users = current_group.users
     @tasks = @group.tasks
-    @requests = @group.requests
     gon.user_id = current_user.id
     gon.group_id = @group.id
+
+    @requests = @user.requests
     @requested = false
     if not @in_group
       @requests.each do |request|
-        if request.user == @user
+        if request.group == @group
           @requested = true
         end
       end
@@ -21,17 +22,25 @@ class GroupsController < ApplicationController
   end
 
   def new
+    @user = current_user
     @group = Group.new
   end
 
   def create
-    @group = Group.new(group_params)
-    if @group.save
-      current_user.groups << @group
-      redirect_to root_path
+    @user = current_user
+    if current_user.groups.length < User.max_groups
+      respond_to do |format|
+        @group = Group.new(group_params)
+        if @group.save
+          @user.groups << @group
+          format.html {redirect_to @group}
+        else
+          @errors = @group.errors
+          format.js {render :file => "layouts/errors.js.erb"}
+        end
+      end
     else
-      puts "Group not created"
-      redirect_to root_path
+      puts "User already has maximum number of groups"
     end
   end
 
@@ -61,28 +70,45 @@ class GroupsController < ApplicationController
     @group = Group.find(params[:id])
     @user = User.find(params[:user_id])
     request = Request.new(request_params)
+
+    @requested = false
+    @requests = @user.requests
+    @requests.each do |request|
+      if request.group == @group
+        @requested = true
+      end
+    end
     
     # Send alert when successfully made request or an error occured
-    if request.save
-      @group.requests << request
-      @user.requests << request
+    if not @requested
+      respond_to do |format|
+        if request.save
+          @group.requests << request
+          @user.requests << request
+          format.html {redirect_to search_groups_path}
+        else
+          @errors = request.errors
+          format.js {render :file => "layouts/errors.js.erb"}
+        end
+      end
     else
-      puts "Something went wrong"
+      puts "Error: Trying to make another request when one already exists"
     end
-    redirect_to search_groups_path
   end
 
   def add_member
     user = User.find(params[:user_id])
     group = Group.find(params[:id])
     request = Request.find(params[:request_id])
-    if group.users.length < group.size
-      group.users << user 
-      request.destroy
-      puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    if not group.users.include? user
+      if group.users.length < group.size
+        group.users << user 
+        request.destroy
+      else
+        puts "Group is full"
+      end
     else
-      puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-      puts "Group is full"
+      puts "User already in group. Should not happen"
     end
     redirect_to group_path(group)
   end
@@ -91,6 +117,7 @@ class GroupsController < ApplicationController
   
   def in_group?
     if not current_group
+      # The group does not exist
       redirect_back fallback_location: root_path
     else
       @in_group = current_group.users.include? current_user

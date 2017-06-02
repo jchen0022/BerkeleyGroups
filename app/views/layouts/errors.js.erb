@@ -1,0 +1,9 @@
+<% js = escape_javascript(
+  render(partial: 'layouts/errors', locals: {})
+) %>
+$("#error-messages").html("<%= js %>");
+$(function() {
+  $('#error-messages').delay(10).fadeIn('normal', function() {
+    $(this).delay(1000).fadeOut();
+  });
+});

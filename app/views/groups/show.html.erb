@@ -6,13 +6,15 @@
         <li><h3><%= user.first_name %> <%= user.last_name %></h3></li>
       <% end %>
     </ul>
-    <h1>Requests</h1>
-    <% @requests.each do |request| %>
-      <% user = request.user %>
-      <li>
-        <h3>Request from: <%= user.first_name %> <%= user.last_name %></h3>
-        <%= link_to "Accept request", add_member_group_path(@group, user_id: user.id, request_id: request.id), method: :post, class: "btn btn-primary" %>
-      </li>
+    <% if @users.length < @group.size and @requests.any? %>
+      <h1>Requests</h1>
+      <% @requests.each do |request| %>
+        <% user = request.user %>
+        <li>
+          <h3>Request from: <%= user.first_name %> <%= user.last_name %></h3>
+          <%= link_to "Accept request", add_member_group_path(@group, user_id: user.id, request_id: request.id), method: :post, class: "btn btn-primary" %>
+        </li>
+      <% end %>
     <% end %>
     <h1>Tasks</h1>
     <ul class="tasks-list">
@@ -21,7 +23,7 @@
           <h3><%= task.name %></h3>
           <h5><%= task.description %></h5>
           <h5>Task for: <%= task.user.first_name %> <%=task.user.last_name %></h5> 
-          <h5>Completed: <%= task.completed %></h5>
+          <h5 id="task-completion">Completed: <%= task.completed %></h5>
           <% if not task.completed %>
             <%= link_to "Completed task!", group_task_path(@group, task, completed: true), method: :put, class: "btn btn-success" %>
           <% else %>

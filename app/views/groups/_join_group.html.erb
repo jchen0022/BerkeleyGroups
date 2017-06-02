@@ -3,7 +3,7 @@
 <% if @requested %>
   <h3>You have already requested to join this group!</h3>
 <% else %>
-  <%= form_for :request_join, url: request_join_group_path(@group), method: :post do |f| %>
+  <%= form_for :request_join, url: request_join_group_path(@group), method: :post, remote: true do |f| %>
     <%= f.label :description %>
     <%= f.text_area :description, class: "form-control"%>
 

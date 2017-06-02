@@ -4,6 +4,10 @@ class Group < ApplicationRecord
   has_many :tasks, dependent: :destroy
   has_many :requests, dependent: :destroy
 
+  validates :name, length: {minimum: 5}
+  validates :course, length: {minimum: 2, maximum: 20}
+  validates :size, presence: true, numericality: {greater_than: 1, less_than: 5, only_integer: true}
+
   filterrific(
     default_filter_params: {group_size: 4},
     available_filters: [

@@ -14,7 +14,6 @@
 //= require jquery_ujs
 //= require jquery-ui
 //= require turbolinks
-//= require rails-ujs
 //= require bootstrap-sprockets
 //= require filterrific/filterrific-jquery
 //= require_tree .

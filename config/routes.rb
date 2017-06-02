@@ -5,6 +5,9 @@ Rails.application.routes.draw do
     collection do
       get 'search'
     end
+    member do
+      post 'leave_group'
+    end
   end
 
   resources :groups do

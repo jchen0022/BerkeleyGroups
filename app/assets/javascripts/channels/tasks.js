@@ -51,9 +51,11 @@ function initiateTasksChannel(userId, groupId) {
         taskCompletion: function(data) {
             console.log("completion")
             if (data.completed) {
-                return $("#task-" + data.id + " .btn-success").removeClass("btn-success").addClass("btn-warning").attr("href", this.groupTaskPath(data, "?completed=false")).text("Un-complete task");
+                $("#task-" + data.id + " .btn-success").removeClass("btn-success").addClass("btn-warning").attr("href", this.groupTaskPath(data, "?completed=false")).text("Un-complete task");
+                return $("#task-" + data.id + " #task-completion").text("Completed: true")
             } else {
-                return $("#task-" + data.id + " .btn-warning").removeClass("btn-warning").addClass("btn-success").attr("href", this.groupTaskPath(data, "?completed=true")).text("Complete task!");
+                $("#task-" + data.id + " .btn-warning").removeClass("btn-warning").addClass("btn-success").attr("href", this.groupTaskPath(data, "?completed=true")).text("Complete task!");
+                return $("#task-" + data.id + " #task-completion").text("Completed: false")
             };
         },
 
