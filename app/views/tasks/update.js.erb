@@ -1,0 +1,7 @@
+<% if @completed == "true" %>
+  $("#task-<%= @task.id %> .btn-success").removeClass("btn-success").addClass("btn-warning").attr("href", this.groupTaskPath(data, "?completed=false")).text("Un-complete task");
+  $("#task-<%= @task.id %> #task-completion").text("Completed: true")
+<% else %>
+  $("#task-<%= @task.id %> .btn-warning").removeClass("btn-warning").addClass("btn-success").attr("href", this.groupTaskPath(data, "?completed=true")).text("Un-complete task");
+  $("#task-<%= @task.id %> #task-completion").text("Completed: false")
+<% end %>

@@ -10,14 +10,16 @@ class GroupsController < ApplicationController
     gon.user_id = current_user.id
     gon.group_id = @group.id
 
-    @requests = @user.requests
-    @requested = false
     if not @in_group
+      @requested = false
+      @requests = @user.requests
       @requests.each do |request|
         if request.group == @group
           @requested = true
         end
       end
+    else 
+      @requests = @group.requests
     end
   end
 

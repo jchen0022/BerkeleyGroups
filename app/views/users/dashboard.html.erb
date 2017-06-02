@@ -1,5 +1,11 @@
 <div class="container-fluid" style="padding: 0% 2%">
   <h1>Hi <%= @user.first_name %></h1>
-  <h1>My groups</h1>
-  <%= render "users/user_groups_list", locals: {groups: @groups} %>
+  <% if @groups.any? %>
+    <%= render "users/user_groups_list", locals: {groups: @groups} %>
+    <%= render "users/user_tasks" %>
+  <% else %>
+    <h3>Oh no! It looks like you're not in any groups...</h3>
+    <%= link_to "Search for a group!", search_groups_path, class: "btn btn-primary" %>
+    <%= link_to "Create a group!", new_group_path, class: "btn btn-primary" %>
+  <% end %>
 </div>

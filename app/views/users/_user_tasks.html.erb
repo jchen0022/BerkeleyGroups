@@ -1,0 +1,13 @@
+<h1>My active tasks</h1>
+<div>
+  <ul>
+  <% @user.tasks.order(:priority).each do |task| %>
+    <li class="group-result">
+      <% group = task.group %>
+      <h3><%= link_to group.name, group_path(group) %></h3>
+      <h3><%= task.name %></h3>
+      <h5><%= task.description %></h5>
+    </li>
+  <% end %>
+  </ul>
+</div>

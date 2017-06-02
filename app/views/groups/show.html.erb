@@ -1,5 +1,5 @@
 <div class="container-fluid" style="padding: 0% 5%">
-  <h1><%= @group.name %> <%= @users.length %>/<%= @group.size %></h1>
+  <h1><%= @group.name %> <%= @users.length.to_s + "/" + @group.size.to_s if @in_group %></h1>
   <% if @in_group %>
     <ul>
       <% @users.each do |user| %>
@@ -10,26 +10,33 @@
       <h1>Requests</h1>
       <% @requests.each do |request| %>
         <% user = request.user %>
-        <li>
-          <h3>Request from: <%= user.first_name %> <%= user.last_name %></h3>
-          <%= link_to "Accept request", add_member_group_path(@group, user_id: user.id, request_id: request.id), method: :post, class: "btn btn-primary" %>
-        </li>
+        <% if user.groups.length < User.max_groups %>
+          <li>
+            <h3>Request from: <%= user.first_name %> <%= user.last_name %></h3>
+            <h5><%= request.description %></h5>
+            <%= link_to "Accept request", add_member_group_path(@group, user_id: user.id, request_id: request.id), method: :post, class: "btn btn-primary" %>
+          </li>
+        <% else %>
+          <% request.destroy %>
+        <% end %>
       <% end %>
     <% end %>
     <h1>Tasks</h1>
     <ul class="tasks-list">
-      <% @tasks.each do |task| %>
+      <% @tasks.order(:priority).each do |task| %>
         <li id="task-<%= task.id %>" class="task-item">
           <h3><%= task.name %></h3>
           <h5><%= task.description %></h5>
+          <h5>Priority: <%= task.priority %></h5>
           <h5>Task for: <%= task.user.first_name %> <%=task.user.last_name %></h5> 
           <h5 id="task-completion">Completed: <%= task.completed %></h5>
           <% if not task.completed %>
-            <%= link_to "Completed task!", group_task_path(@group, task, completed: true), method: :put, class: "btn btn-success" %>
+            <%= link_to "Complete task!", group_task_path(@group, task, completed: true), method: :put, class: "btn btn-success", remote: true %>
           <% else %>
-            <%= link_to "Un-complete task", group_task_path(@group, task, completed: false), method: :put, class: "btn btn-warning" %>
+            <%= link_to "Un-complete task", group_task_path(@group, task, completed: false), method: :put, class: "btn btn-warning", remote: true %>
           <% end %>
-          <%= link_to "Delete task :(", group_task_path(@group, task), method: :delete, class: "btn btn-danger" %>
+          <%= link_to "Edit task", edit_group_task_path(@group, task), class: "btn btn-warning" %>
+          <%= link_to "Delete task :(", group_task_path(@group, task), method: :delete, class: "btn btn-danger", remote: true %>
         </li>
       <% end %>
     </ul>

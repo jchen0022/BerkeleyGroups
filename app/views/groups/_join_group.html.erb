@@ -2,6 +2,8 @@
 <h2>Currently <%= @group.users.length %>/<%= @group.size %> users</h2>
 <% if @requested %>
   <h3>You have already requested to join this group!</h3>
+<% elsif @user.groups.length >= User.max_groups %>
+  <h3>You are already in the maximum amount of groups!</h3>
 <% else %>
   <%= form_for :request_join, url: request_join_group_path(@group), method: :post, remote: true do |f| %>
     <%= f.label :description %>

@@ -33,20 +33,24 @@ class TasksController < ApplicationController
     if params.key?(:completed)
       # For updating buttons in group dashboard
       @task = Task.find(params[:id])
-      completed = params[:completed]
-      if completed == "true"
-        @task.update(completed: true)
-        TasksChannel.broadcast_to(@group, {action: "update", update_type: "completion", completed: "true", data: @task})
-        redirect_to group_path(@group)
-      elsif completed == "false"
-        @task.update(completed: false)
-        TasksChannel.broadcast_to(@group, {action: "update", update_type: "completion", completed: "false", data: @task})
-        redirect_to group_path(@group)
-      else
-        puts "Should not happen"
+      @completed = params[:completed]
+      respond_to do |format|
+        if @completed == "true"
+          @task.update(completed: true)
+          TasksChannel.broadcast_to(@group, {action: "update", update_type: "completion", completed: "true", data: @task})
+          format.js
+        elsif @completed == "false"
+          @task.update(completed: false)
+          TasksChannel.broadcast_to(@group, {action: "update", update_type: "completion", completed: "false", data: @task})
+          format.js
+        else
+          @errors = {"please" => "contact an admin."}
+          puts "Something broke at tasks#update"
+          format.js {render :file => "layouts/errors.js.erb"}
+        end
       end
     else
-      # For manually updating task
+      # For manually updating task via tasks#edit
       @task = Task.find(params[:id])
       to_update = task_params
       new_user = User.find(to_update.delete(:user_id))
