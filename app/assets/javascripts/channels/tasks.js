@@ -15,7 +15,7 @@ function initiateTasksChannel(userId, groupId) {
                 var data = data.data
                 console.log("received");
                 console.log(data)
-                return $(".tasks-list").append(this.appendTask(data, user));
+                return this.appendTask(data, user)
             } else if (data.action == "destroy") {
                 console.log("need to delete");
                 var data = data.data
@@ -25,9 +25,12 @@ function initiateTasksChannel(userId, groupId) {
                 if (updateType == "completion") {
                     var data = data.data
                     return this.taskCompletion(data)
-                } else if (updateType == "priority") {
-                    return
-                }else {
+                } else if (updateType == "all") {
+                    console.log("update all")
+                    var user = data.user
+                    var data = data.data
+                    return this.updateAll(data, user)
+                } else {
                     console.log("should not happen");
                 }
             } else {
@@ -37,10 +40,13 @@ function initiateTasksChannel(userId, groupId) {
 
         appendTask: function(data, user) {
             var labels = this.taskLabels(data, user)
-            completionButton = '<a class="btn btn-success" rel="nofollow" data-method="put" href="' + this.groupTaskPath(data, "?completed=true") + '">Complete task!</a>'
+            var taskCompleted = $("<h5></h5>").addClass("task-completion").text("Completed: false");
+            labels.push(taskCompleted)
+            var allLabels = $("<div></div>").addClass("task-labels").append(labels)
+            var completionButton = '<a class="btn btn-success completion" rel="nofollow" data-method="put" href="' + this.groupTaskPath(data, "?completed=true") + '">Complete task!</a>'
             var deleteButton = '<a class="btn btn-danger" rel="nofollow" data-method="delete" href="' + this.groupTaskPath(data, "") + '">Delete task :(</a>'
-            var listItem = '<li id="' + 'task-' + data.id + '" ' + 'class="task-item">' + labels + completionButton + deleteButton + '</li>'
-            return listItem
+            var listItem = $("<li></li>").attr("id", "task-" + data.id).addClass("task-item").append(allLabels).append(completionButton).append(deleteButton)
+            return $(".tasks-list").append(listItem)
             
         },
 
@@ -51,20 +57,21 @@ function initiateTasksChannel(userId, groupId) {
         taskCompletion: function(data) {
             console.log("completion")
             if (data.completed) {
-                $("#task-" + data.id + " .btn-success").removeClass("btn-success").addClass("btn-warning").attr("href", this.groupTaskPath(data, "?completed=false")).text("Un-complete task");
+                $("#task-" + data.id + " .completion").removeClass("btn-success").addClass("btn-warning").attr("href", this.groupTaskPath(data, "?completed=false")).text("Un-complete task");
                 return $("#task-" + data.id + " #task-completion").text("Completed: true")
             } else {
-                $("#task-" + data.id + " .btn-warning").removeClass("btn-warning").addClass("btn-success").attr("href", this.groupTaskPath(data, "?completed=true")).text("Complete task!");
-                return $("#task-" + data.id + " #task-completion").text("Completed: false")
-            };
+                $("#task-" + data.id + " .completion").removeClass("btn-warning").addClass("btn-success").attr("href", this.groupTaskPath(data, "?completed=true")).text("Complete task!");
+                return $("#task-" + data.id + " #task-completion").text("Completed: false") }; },
+
+        updateAll(data, user) {
+            return $("#task-" + data.id + " .task-labels").html('').append(this.taskLabels(data, user));
         },
 
         taskLabels(data, user) {
-            var name = "<h3>" + data.name + "</h3>";
-            var description = "<h5>" + data.description + "</h5>";
-            var taskFor = "<h5>Task for: " + user.first_name + " " + user.last_name + "</h5> "
-            var taskCompleted = "<h5>Task Completed: false</h5>"
-            return name + description + taskFor + taskCompleted
+            var name = $("<h3></h3>").text(data.name)
+            var description = $("<h5></h5>").addClass("task-description").text(data.description);       
+            var user = $("<h5></h5>").addClass("task-user").text("Task for: " + user.first_name + ' ' + user.last_name)
+            return [name, description, user]
         }
     })
 }
