@@ -1,3 +1,4 @@
+<h1><%= @group.name %> <%= @users.length.to_s + "/" + @group.size.to_s %></h1>
 <h2>Group for: <%= @group.course %></h2>
 <h2>Currently <%= @group.users.length %>/<%= @group.size %> users</h2>
 <% if @requested %>
@@ -5,11 +6,10 @@
 <% elsif @user.groups.length >= User.max_groups %>
   <h3>You are already in the maximum amount of groups!</h3>
 <% else %>
-  <%= form_for :request_join, url: request_join_group_path(@group), method: :post, remote: true do |f| %>
+  <%= form_for [@group, Request.new], remote: true do |f| %>
     <%= f.label :description %>
     <%= f.text_area :description, class: "form-control"%>
 
-    <%= hidden_field_tag :user_id, @user.id %>
     <%= f.submit "Request to join!", class: "btn btn-primary" %>
   <% end %>
 <% end %>

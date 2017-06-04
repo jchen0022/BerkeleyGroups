@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :groups, through: :user_groups
   has_many :tasks, dependent: :destroy
   has_many :requests, dependent: :destroy
+  has_many :chat_messages, dependent: :destroy
 
   before_save :format_name
   before_update :format_name

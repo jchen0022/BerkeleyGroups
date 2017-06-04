@@ -1,8 +1,9 @@
-
 document.addEventListener("turbolinks:load", function() {
-    $('.groups.show').ready(function() {
-        initiateTasksChannel(gon.user_id, gon.group_id)
-    });
+    if ($(".groups.show").length > 0) {
+        initiateTasksChannel(gon.user_id, gon.group_id);
+    } else {
+        return;
+    }
 });
 
 function initiateTasksChannel(userId, groupId) {

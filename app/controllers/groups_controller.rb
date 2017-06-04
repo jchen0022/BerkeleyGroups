@@ -5,12 +5,8 @@ class GroupsController < ApplicationController
   def show
     @user = current_user
     @group = current_group
-    @users = current_group.users
-    @tasks = @group.tasks
-    gon.user_id = current_user.id
-    gon.group_id = @group.id
 
-    if not @in_group
+    if not in_group?
       @requested = false
       @requests = @user.requests
       @requests.each do |request|
@@ -18,8 +14,13 @@ class GroupsController < ApplicationController
           @requested = true
         end
       end
+      redirect_to new_group_request_path(@group, requested: @requested)
     else 
       @requests = @group.requests
+      @users = current_group.users
+      @tasks = @group.tasks
+      gon.user_id = current_user.id
+      gon.group_id = @group.id
     end
   end
 
@@ -35,6 +36,8 @@ class GroupsController < ApplicationController
         @group = Group.new(group_params)
         if @group.save
           @user.groups << @group
+          main_chat_room = ChatRoom.create!(name: "main")
+          @group.chat_rooms << main_chat_room
           format.html {redirect_to @group}
         else
           @errors = @group.errors
@@ -68,36 +71,6 @@ class GroupsController < ApplicationController
     redirect_to(reset_filterrific_url(format: :html)) and return
   end
 
-  def request_join
-    @group = Group.find(params[:id])
-    @user = User.find(params[:user_id])
-    request = Request.new(request_params)
-
-    @requested = false
-    @requests = @user.requests
-    @requests.each do |request|
-      if request.group == @group
-        @requested = true
-      end
-    end
-    
-    # Send alert when successfully made request or an error occured
-    if not @requested
-      respond_to do |format|
-        if request.save
-          @group.requests << request
-          @user.requests << request
-          format.html {redirect_to search_groups_path}
-        else
-          @errors = request.errors
-          format.js {render :file => "layouts/errors.js.erb"}
-        end
-      end
-    else
-      puts "Error: Trying to make another request when one already exists"
-    end
-  end
-
   def add_member
     user = User.find(params[:user_id])
     group = Group.find(params[:id])
@@ -122,7 +95,7 @@ class GroupsController < ApplicationController
       # The group does not exist
       redirect_back fallback_location: root_path
     else
-      @in_group = current_group.users.include? current_user
+      return current_group.users.include? current_user
     end
   end
 

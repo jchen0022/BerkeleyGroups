@@ -1,0 +1,13 @@
+<h1>Requests</h1>
+<% @requests.each do |request| %>
+  <% user = request.user %>
+  <% if user.groups.length < User.max_groups %>
+    <li>
+      <h3>Request from: <%= user.first_name %> <%= user.last_name %></h3>
+      <h5><%= request.description %></h5>
+      <%= link_to "Accept request", add_member_group_path(@group, user_id: user.id, request_id: request.id), method: :post, class: "btn btn-primary" %>
+    </li>
+  <% else %>
+    <% request.destroy %>
+  <% end %>
+<% end %>

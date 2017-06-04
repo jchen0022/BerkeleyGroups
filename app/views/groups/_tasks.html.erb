@@ -1,0 +1,29 @@
+<h1>Tasks</h1>
+<ul class="tasks-list">
+  <% @tasks.order(:priority).each do |task| %>
+    <li id="task-<%= task.id %>" class="task-item">
+      <div class="task-labels">
+        <h3 class="task-name"><%= task.name %></h3>
+        <h5 class="task-description"><%= task.description %></h5>
+        <h5 class="task-priority">Priority: <%= task.priority %></h5>
+        <h5 class="task-user">Task for: <%= task.user.first_name %> <%=task.user.last_name %></h5> 
+        <h5 id="task-completion">Completed: <%= task.completed %></h5>
+      </div>
+      <% if not task.completed %>
+        <%= link_to "Complete task!", group_task_path(@group, task, completed: true), method: :put, class: "btn btn-success completion", remote: true %>
+      <% else %>
+        <%= link_to "Un-complete task", group_task_path(@group, task, completed: false), method: :put, class: "btn btn-warning completion", remote: true %>
+      <% end %>
+      <%= link_to "Edit task", edit_group_task_path(@group, task), class: "btn btn-warning" %>
+      <%= link_to "Delete task :(", group_task_path(@group, task), method: :delete, class: "btn btn-danger", remote: true %>
+    </li>
+  <% end %>
+</ul>
+<%= link_to "New task", new_group_task_path(@group), class: "btn btn-primary" %>
+<script>
+  $(function() {
+    $(".tasks-list").sortable({
+       distance:20
+    });
+ });
+</script>
