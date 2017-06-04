@@ -70,8 +70,10 @@ function initiateTasksChannel(userId, groupId) {
         taskLabels(data, user) {
             var name = $("<h3></h3>").text(data.name)
             var description = $("<h5></h5>").addClass("task-description").text(data.description);       
-            var user = $("<h5></h5>").addClass("task-user").text("Task for: " + user.first_name + ' ' + user.last_name)
-            return [name, description, user]
+            var priority = $("<h5></h5>").addClass("task-priority").text("Priority: " + data.priority);
+            var user = $("<h5></h5>").addClass("task-user").text("Task for: " + user.first_name + ' ' + user.last_name);
+            var completion = $("<h5></h5>").addClass("task-completion").text("Completed: " + data.completed);
+            return [name, description, priority, user, completion];
         }
     })
 }
