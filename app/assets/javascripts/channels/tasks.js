@@ -41,8 +41,6 @@ function initiateTasksChannel(userId, groupId) {
 
         appendTask: function(data, user) {
             var labels = this.taskLabels(data, user)
-            var taskCompleted = $("<h5></h5>").addClass("task-completion").text("Completed: false");
-            labels.push(taskCompleted)
             var allLabels = $("<div></div>").addClass("task-labels").append(labels)
             var completionButton = '<a class="btn btn-success completion" rel="nofollow" data-method="put" href="' + this.groupTaskPath(data, "?completed=true") + '">Complete task!</a>'
             var deleteButton = '<a class="btn btn-danger" rel="nofollow" data-method="delete" href="' + this.groupTaskPath(data, "") + '">Delete task :(</a>'

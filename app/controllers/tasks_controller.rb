@@ -14,8 +14,8 @@ class TasksController < ApplicationController
       if @task.save
         @group.tasks << @task
         new_user.tasks << @task
-        TasksChannel.broadcast_to(@group, {action: "create", data: @task, user: new_user}) 
         format.html {redirect_to @group}
+        TasksChannel.broadcast_to(@group, {action: "create", data: @task, user: new_user}) 
       else
         @errors = @task.errors
         format.js {render :file => "layouts/errors.js.erb"}
@@ -34,20 +34,14 @@ class TasksController < ApplicationController
       # For updating buttons in group dashboard
       @task = Task.find(params[:id])
       @completed = params[:completed]
-      respond_to do |format|
-        if @completed == "true"
-          @task.update(completed: true)
-          TasksChannel.broadcast_to(@group, {action: "update", update_type: "completion", data: @task})
-          format.js
-        elsif @completed == "false"
-          @task.update(completed: false)
-          TasksChannel.broadcast_to(@group, {action: "update", update_type: "completion", data: @task})
-          format.js
-        else
-          @errors = {"please" => "contact an admin."}
-          puts "Something broke at tasks#update"
-          format.js {render :file => "layouts/errors.js.erb"}
-        end
+      if @completed == "true"
+        @task.update(completed: true)
+        TasksChannel.broadcast_to(@group, {action: "update", update_type: "completion", data: @task})
+      elsif @completed == "false"
+        @task.update(completed: false)
+        TasksChannel.broadcast_to(@group, {action: "update", update_type: "completion", data: @task})
+      else
+        puts "Something broke at tasks#update"
       end
     else
       # For manually updating task via tasks#edit
@@ -62,12 +56,9 @@ class TasksController < ApplicationController
   end
 
   def destroy
-    respond_to do |format|
-      @task = Task.find(params[:id])
-      @task.destroy
-      TasksChannel.broadcast_to(@group, {action: "destroy", data: @task})
-      format.js 
-    end
+    @task = Task.find(params[:id])
+    @task.destroy
+    TasksChannel.broadcast_to(@group, {action: "destroy", data: @task})
   end
 
   private 

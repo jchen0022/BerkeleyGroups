@@ -11,10 +11,11 @@ class UsersController < ApplicationController
   end
 
   def leave_group
-    @group = Group.find(params[:id])
-    @group.users.delete(current_user)
-    if @group.users.length == 0
-      @group.destroy
+    group = Group.find(params[:id])
+    group.users.delete(current_user)
+    group.tasks.where(user_id: current_user.id).destroy_all
+    if group.users.length == 0
+      group.destroy
     end
     redirect_to user_dashboard_path(current_user)
   end

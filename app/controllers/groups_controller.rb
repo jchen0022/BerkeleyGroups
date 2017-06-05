@@ -19,8 +19,11 @@ class GroupsController < ApplicationController
       @requests = @group.requests
       @users = current_group.users
       @tasks = @group.tasks
+      @chatroom = @group.chatrooms.find_by(name: "main")
+      @messages = @chatroom.chat_messages.sort_by(&:created_at)
       gon.user_id = current_user.id
       gon.group_id = @group.id
+      gon.room = "main"
     end
   end
 
@@ -36,8 +39,8 @@ class GroupsController < ApplicationController
         @group = Group.new(group_params)
         if @group.save
           @user.groups << @group
-          main_chat_room = ChatRoom.create!(name: "main")
-          @group.chat_rooms << main_chat_room
+          main_chatroom = Chatroom.create!(name: "main")
+          @group.chatrooms << main_chatroom
           format.html {redirect_to @group}
         else
           @errors = @group.errors

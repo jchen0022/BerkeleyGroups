@@ -1,4 +1,4 @@
-<div class="container-fluid" style="padding: 0% 5%">
+<div class="container-fluid">
   <h1><%= @group.name %> <%= @users.length.to_s + "/" + @group.size.to_s %></h1>
   <ul>
     <% @users.each do |user| %>
@@ -9,5 +9,5 @@
     <%= render "groups/requests" %>
   <% end %>
   <%= render 'groups/tasks' %>
-  <%= render "chat_rooms/room", name: "main" %>
+  <%= render "chatrooms/room", name: "main" %>
 </div>

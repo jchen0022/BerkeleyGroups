@@ -3,7 +3,7 @@ class Group < ApplicationRecord
   has_many :users, through: :user_groups
   has_many :tasks, dependent: :destroy
   has_many :requests, dependent: :destroy
-  has_many :chat_rooms, dependent: :destroy
+  has_many :chatrooms, dependent: :destroy
 
   validates :name, length: {minimum: 5}
   validates :course, length: {minimum: 2, maximum: 20}

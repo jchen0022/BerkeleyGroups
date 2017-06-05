@@ -13,6 +13,11 @@ Rails.application.routes.draw do
   resources :groups do
     resources :tasks, only: [:new, :create, :edit, :update, :destroy]
     resources :requests, only: [:new, :create]
+    resources :chatrooms, only: [:new, :create, :update, :destroy] do
+      member do
+        post 'create_message'
+      end
+    end
 
     collection do
       get 'search'

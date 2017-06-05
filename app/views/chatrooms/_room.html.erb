@@ -1,0 +1,36 @@
+<div class="container-fluid chatroom">
+  <div class="chat-messages">
+    <% @messages.each do |message| %>
+      <%= render "chatrooms/message", message: message %>
+    <% end %>
+  </div>
+  <div class="new-message">
+    <%= form_for ChatMessage.new, url: create_message_group_chatroom_path(@group, @chatroom), method: :post, remote: true do |f| %>
+      <%= f.text_area :message, id: "message-text-area", class: "form-control" %>
+    <% end %>
+  </div>
+</div>
+<script>
+  chatMessages = $(".chat-messages")
+  chatMessages.scrollTop(chatMessages.prop("scrollHeight"));
+  function resetForm() {
+    var form = document.getElementById("new_chat_message");
+    setTimeout(function() {
+      form.reset()
+    }, 1);
+  }
+  $("#message-text-area").keypress(function(e) {
+    var text = $("#message-text-area").val()
+    if (e.which == 13 && !e.shiftKey) {
+      if (!$.trim($("#message-text-area").val())) {
+        e.preventDefault();
+      } else {
+        $(this).closest('form').submit();
+        var form = document.getElementById("new_chat_message");
+        setTimeout(function() {
+          form.reset()
+        }, 1);
+      }
+    }
+  })
+</script>
