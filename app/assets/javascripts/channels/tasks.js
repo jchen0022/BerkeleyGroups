@@ -42,10 +42,12 @@ function initiateTasksChannel(userId, groupId) {
         appendTask: function(data, user) {
             var labels = this.taskLabels(data, user)
             var allLabels = $("<div></div>").addClass("task-labels").append(labels)
-            var completionButton = '<a class="btn btn-success completion" rel="nofollow" data-method="put" href="' + this.groupTaskPath(data, "?completed=true") + '">Complete task!</a>'
-            var deleteButton = '<a class="btn btn-danger" rel="nofollow" data-method="delete" href="' + this.groupTaskPath(data, "") + '">Delete task :(</a>'
-            var listItem = $("<li></li>").attr("id", "task-" + data.id).addClass("task-item").append(allLabels).append(completionButton).append(deleteButton)
-            return $(".tasks-list").append(listItem)
+            var completionButton = '<a class="btn btn-success completion" data-remote="true" rel="nofollow" data-method="put" href="' + this.groupTaskPath(data, "?completed=true") + '">Complete task!</a>';
+            var editButton = '<a class="btn btn-warning" href="' + this.groupTaskPath(data, "/edit") + '">Edit task</a>';
+            var deleteButton = '<a class="btn btn-danger" data-remote="true" rel="nofollow" data-method="delete" href="' + this.groupTaskPath(data, "") + '">Delete task :(</a>';
+            var buttons = [completionButton, editButton, deleteButton]
+            var listItem = $("<li></li>").attr("id", "task-" + data.id).addClass("task-item").append(allLabels).append(buttons);
+            return $(".tasks-list").append(listItem);
             
         },
 

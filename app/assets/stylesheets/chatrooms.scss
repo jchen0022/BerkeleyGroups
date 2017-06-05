@@ -58,5 +58,8 @@
     left: 10%;
     margin-right: 0px;
     margin-bottom: 10px;
+    textarea {
+      resize: none;
+    }
   }
 }
