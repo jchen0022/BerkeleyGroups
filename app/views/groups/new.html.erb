@@ -10,7 +10,7 @@
       <%= f.label :size %>
       <%= f.select :size, options_for_select(Group.options_for_size), {}, class: "form-control "%>
 
-      <%= f.submit "Create Group", class: "btn btn-primary" %>
+      <%= f.submit "Create Group", id: "create-group", class: "btn btn-primary" %>
     <% end %>
   </div>
 <% else %>

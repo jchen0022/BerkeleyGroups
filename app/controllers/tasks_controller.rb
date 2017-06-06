@@ -14,7 +14,7 @@ class TasksController < ApplicationController
       if @task.save
         @group.tasks << @task
         new_user.tasks << @task
-        format.html {redirect_to @group}
+        format.js 
         TasksChannel.broadcast_to(@group, {action: "create", data: @task, user: new_user}) 
       else
         @errors = @task.errors
@@ -45,13 +45,19 @@ class TasksController < ApplicationController
       end
     else
       # For manually updating task via tasks#edit
-      @task = Task.find(params[:id])
+      task = Task.find(params[:id])
       to_update = task_params
       new_user = User.find(to_update.delete(:user_id))
-      @task.update(to_update)
-      new_user.tasks << @task
-      TasksChannel.broadcast_to(@group, {action: "update", update_type: "all", data: @task, user: new_user})
-      redirect_to group_path(@group)
+      respond_to do |format|
+        if task.update(to_update)
+          new_user.tasks << task
+          format.js
+          TasksChannel.broadcast_to(@group, {action: "update", update_type: "all", data: task, user: new_user})
+        else
+          @errors = @task.errors
+          format.js {render :file => "layouts/errors.js.erb"}
+        end
+      end
     end
   end
 

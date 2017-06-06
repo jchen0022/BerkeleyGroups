@@ -1,24 +1,30 @@
 <div class="container-fluid chatroom">
   <div class="chat-messages">
-    <% @messages.each do |message| %>
-      <%= render "chatrooms/message", message: message %>
-    <% end %>
-  </div>
-  <div class="new-message">
-    <%= form_for ChatMessage.new, url: create_message_group_chatroom_path(@group, @chatroom), method: :post, remote: true do |f| %>
-      <%= f.text_area :message, id: "message-text-area", class: "form-control" %>
+    <% if @grouped_messages.length > 0 %>
+      <% @grouped_messages.each do |message_chunk| %>
+        <% if message_chunk[1].length > 0 %>
+          <p style="text-align: center;"><%= message_chunk[0] %></p>
+          <% message_chunk[1].each do |message| %>
+            <%= render "chatrooms/message", message: message %>
+          <% end %>
+        <% else %>
+          <p>Nothing here<p>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="new-message">
+      <%= form_for ChatMessage.new, url: create_message_group_chatroom_path(@group, @chatroom), method: :post, remote: true do |f| %>
+        <%= f.text_area :message, id: "message-text-area", class: "form-control" %>
+      <% end %>
+    <% else %>
+      <p>No messages</p>
     <% end %>
   </div>
 </div>
 <script>
   chatMessages = $(".chat-messages")
   chatMessages.scrollTop(chatMessages.prop("scrollHeight"));
-  function resetForm() {
-    var form = document.getElementById("new_chat_message");
-    setTimeout(function() {
-      form.reset()
-    }, 1);
-  }
+
   $("#message-text-area").keypress(function(e) {
     var text = $("#message-text-area").val()
     if (e.which == 13 && !e.shiftKey) {

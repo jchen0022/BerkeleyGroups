@@ -84,6 +84,8 @@ GEM
       json
       multi_json
       request_store (>= 1.0)
+    groupdate (3.2.0)
+      activesupport (>= 3)
     i18n (0.8.1)
     jbuilder (2.6.4)
       activesupport (>= 3.0.0)
@@ -212,6 +214,7 @@ DEPENDENCIES
   devise
   filterrific
   gon
+  groupdate
   jbuilder (~> 2.5)
   jquery-rails
   jquery-ui-rails

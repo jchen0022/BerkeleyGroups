@@ -31,6 +31,9 @@ gem 'devise'
 # Gon for passing variables to client js
 gem 'gon'
 
+# Date ordering
+gem 'groupdate'
+
 # Filterrific for filtering groups
 gem 'filterrific' #, :github => 'ayaman/filterrific'
 

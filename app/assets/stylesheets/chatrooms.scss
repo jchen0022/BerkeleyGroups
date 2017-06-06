@@ -24,11 +24,22 @@
     .message {
       width: 40%;
 
-      .message-user {
-        p {
+      .message-header {
+        height: 12px;
+        padding: 0px 3px;
+
+        .message-user {
           font-size: 9px;
           margin: 0px;
           position: relative;
+          float: left;
+        }
+
+        .sent-ago {
+          font-size: 9px;
+          margin: 0px;
+          position: relative;
+          float: right;
         }
       }
 

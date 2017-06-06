@@ -2,8 +2,10 @@
 <% float = user == current_user ? "right" : "left" %>
 <div class= "message-row">
   <div class= "message" style="float: <%=  float %>;">
-    <div class="message-user">
-      <p><%= user.first_name %> <%= user.last_name %></p>
+    <div class="message-header">
+      <span class="message-user"><%= user.first_name %> <%= user.last_name %></span>
+      <span class="sent-ago">Sent <%= time_ago_in_words(message.created_at) %> ago</span>
+
     </div>
     <div class="panel message-body">
       <p><%= message.message %></p>

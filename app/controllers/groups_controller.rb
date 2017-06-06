@@ -20,7 +20,8 @@ class GroupsController < ApplicationController
       @users = current_group.users
       @tasks = @group.tasks
       @chatroom = @group.chatrooms.find_by(name: "main")
-      @messages = @chatroom.chat_messages.sort_by(&:created_at)
+      messages = @chatroom.chat_messages.sort_by(&:created_at)
+      @grouped_messages = messages.group_by_day {|m| m.created_at}
       gon.user_id = current_user.id
       gon.group_id = @group.id
       gon.room = "main"
@@ -41,7 +42,7 @@ class GroupsController < ApplicationController
           @user.groups << @group
           main_chatroom = Chatroom.create!(name: "main")
           @group.chatrooms << main_chatroom
-          format.html {redirect_to @group}
+          format.js
         else
           @errors = @group.errors
           format.js {render :file => "layouts/errors.js.erb"}

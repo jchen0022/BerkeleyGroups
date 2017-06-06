@@ -12,6 +12,6 @@
     <%= f.label :user %>
     <%= f.select :user_id, options_for_select(@group.options_for_user), {}, class: "form-control" %>
 
-    <%= f.submit "Create Task", class: "btn btn-primary new-task-button", data: {disable_with: "Creating task..."} %>
+    <%= f.submit "Create Task", class: "btn btn-primary new-task-button", id: "create-task" %>
   <% end %>
 </div>
