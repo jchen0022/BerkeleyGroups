@@ -11,7 +11,11 @@ Rails.application.routes.draw do
   end
 
   resources :groups do
-    resources :tasks, only: [:new, :create, :edit, :update, :destroy]
+    resources :tasks, only: [:new, :create, :edit, :update, :destroy] do
+      collection do
+        post 'sort'
+      end
+    end
     resources :requests, only: [:new, :create]
     resources :chatrooms, only: [:new, :create, :update, :destroy] do
       member do

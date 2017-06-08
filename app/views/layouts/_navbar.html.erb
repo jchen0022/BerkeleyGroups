@@ -24,6 +24,7 @@
         <% if user_signed_in? %>
           <li><%= link_to "New Group", new_group_path %></li>
           <li><%= link_to "Sign out", destroy_user_session_path, method: :delete %></li>
+          <li><%= link_to "Search", search_groups_path %></li>
         <% else %>
           <li><%= link_to "Sign in", new_user_session_path %></li>
         <% end %>

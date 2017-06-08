@@ -10,7 +10,7 @@
     <%= f.text_field :priority, class: "form-control" %>
 
     <%= f.label :user_id %>
-    <%= f.select :user_id, options_for_select(@group.options_for_user), {}, class: "form-control" %>
+    <%= f.select :user_id, options_for_select(@group.options_for_user, selected: @task.user.id), {}, class: "form-control" %>
 
     <%= f.submit "Update Task", id: "update-task", method: "put", class: "btn btn-primary" %>
   <% end %>

@@ -1,7 +1,7 @@
 <h1>Tasks</h1>
 <ul class="tasks-list">
   <% @tasks.order(:priority).each do |task| %>
-    <li id="task-<%= task.id %>" class="task-item">
+    <li id="task-<%= task.id %>" class="task-item" data-id="<%= task.id %>" >
       <div class="task-labels">
         <h3 class="task-name"><%= task.name %></h3>
         <h5 class="task-description"><%= task.description %></h5>
@@ -20,10 +20,38 @@
   <% end %>
 </ul>
 <%= link_to "New task", new_group_task_path(@group), class: "btn btn-primary" %>
+
 <script>
-  $(function() {
-    $(".tasks-list").sortable({
-       distance:20
+  function createSortableTasks() {
+    setPositions = function() {
+      $(".task-item").each(function(i) {
+        $(this).attr("data-pos", i + 1);
+      })
+    }
+
+    setPositions();
+
+    $(".tasks-list").sortable();
+
+    // after the order changes
+    $(".tasks-list").sortable().bind("sortupdate", function(e, ui) {
+      // array to store new order
+      updatedOrder = []
+      // set the updated positions
+      setPositions();
+
+      // populate the updated_order array with the new task positions
+      $(".task-item").each(function(i) {
+        updatedOrder.push({id: $(this).data("id"), position: i + 1});
+      });
+
+      $.ajax({
+        type: "POST",
+        url: "<%= sort_group_tasks_path(@group) %>",
+        data: {order: updatedOrder}
+      });
     });
- });
+  }
+
+  createSortableTasks();
 </script>

@@ -51,7 +51,7 @@ class TasksController < ApplicationController
       respond_to do |format|
         if task.update(to_update)
           new_user.tasks << task
-          format.js
+          format.js {render :file => "tasks/update_task.js.erb"}
           TasksChannel.broadcast_to(@group, {action: "update", update_type: "all", data: task, user: new_user})
         else
           @errors = @task.errors
@@ -65,6 +65,15 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
     @task.destroy
     TasksChannel.broadcast_to(@group, {action: "destroy", data: @task})
+  end
+
+  def sort
+    group = Group.find(params[:group_id])
+    order = params[:order]
+    order.each do |key, value|
+      updated = Task.find(value[:id]).update(priority: value[:position])
+    end
+    head :ok
   end
 
   private 

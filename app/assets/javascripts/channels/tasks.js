@@ -46,7 +46,7 @@ function initiateTasksChannel(userId, groupId) {
             var editButton = '<a class="btn btn-warning" href="' + this.groupTaskPath(data, "/edit") + '">Edit task</a>';
             var deleteButton = '<a class="btn btn-danger" data-remote="true" rel="nofollow" data-method="delete" href="' + this.groupTaskPath(data, "") + '">Delete task :(</a>';
             var buttons = [completionButton, editButton, deleteButton]
-            var listItem = $("<li></li>").attr("id", "task-" + data.id).addClass("task-item").append(allLabels).append(buttons);
+            var listItem = $("<li></li>").attr("id", "task-" + data.id).addClass("task-item").append(allLabels).append(buttons).attr("data-id", data.id);
             return $(".tasks-list").append(listItem);
             
         },
